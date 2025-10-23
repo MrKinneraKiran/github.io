@@ -3,805 +3,1039 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KKiran.com | AI , Automation & Robotics </title>
+    <title>AI, Robotics & Image Processing</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Orbitron:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
     <style>
-        :root {
-            --primary: #6e44ff;
-            --secondary: #00e5ff;
-            --accent: #ff2e63;
-            --dark: #1a1a2e;
-            --darker: #0d0d1a;
-            --light: #f0f0f0;
-            --gray: #7b7b8f;
-        }
-        
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-        
+
         body {
-            font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, var(--darker) 0%, var(--dark) 70%);
-            color: var(--light);
-            line-height: 1.6;
             overflow-x: hidden;
+            background-color: #0a192f;
+            color: #e6f1ff;
         }
-        
-        .container {
-            width: 90%;
+
+        /* Navigation Menu */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 20px 0;
+            z-index: 1000;
+            transition: all 0.3s ease;
+            background: rgba(10, 25, 47, 0.9);
+            backdrop-filter: blur(10px);
+        }
+
+        .navbar.scrolled {
+            padding: 15px 0;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 20px;
-        }
-        
-        /* Header & Navigation */
-        header {
-            padding: 20px 0;
-            position: fixed;
-            width: 100%;
-            z-index: 1000;
-            transition: background 0.3s ease;
-        }
-        
-        header.scrolled {
-            background: rgba(26, 26, 46, 0.95);
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
-            backdrop-filter: blur(10px);
-        }
-        
-        .header-content {
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
-        
-        .logo {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 28px;
-            font-weight: 700;
-            background: linear-gradient(to right, var(--primary), var(--secondary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+
+        .logo-container {
             display: flex;
             align-items: center;
+            text-decoration: none;
         }
-        
-        .logo i {
-            margin-right: 10px;
-            font-size: 32px;
+
+        .logo-img {
+            width: 50px;
+            height: 50px;
+            margin-right: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            background: linear-gradient(135deg, #64ffda, #52d1ff);
+            position: relative;
+            overflow: hidden;
+            animation: logoPulse 4s infinite ease-in-out;
         }
-        
-        nav ul {
+
+        .logo-inner {
+            width: 40px;
+            height: 40px;
+            background: #0a192f;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: #64ffda;
+            font-size: 1.2rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .logo-text {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #64ffda;
+        }
+
+        .logo-subtitle {
+            font-size: 0.7rem;
+            color: #a8b2d1;
+            margin-top: -5px;
+            letter-spacing: 1px;
+        }
+
+        .nav-menu {
             display: flex;
             list-style: none;
         }
-        
-        nav ul li {
+
+        .nav-item {
             margin-left: 30px;
         }
-        
-        nav ul li a {
-            color: var(--light);
+
+        .nav-link {
+            color: #e6f1ff;
             text-decoration: none;
             font-weight: 500;
-            transition: color 0.3s;
+            transition: color 0.3s ease;
             position: relative;
         }
-        
-        nav ul li a:hover {
-            color: var(--secondary);
+
+        .nav-link:hover {
+            color: #64ffda;
         }
-        
-        nav ul li a::after {
+
+        .nav-link::after {
             content: '';
             position: absolute;
-            bottom: -5px;
-            left: 0;
             width: 0;
             height: 2px;
-            background: var(--secondary);
-            transition: width 0.3s;
+            bottom: -5px;
+            left: 0;
+            background: #64ffda;
+            transition: width 0.3s ease;
         }
-        
-        nav ul li a:hover::after {
+
+        .nav-link:hover::after {
             width: 100%;
         }
-        
-        .menu-btn {
-            display: none;
-            background: none;
-            border: none;
-            color: var(--light);
-            font-size: 24px;
-            cursor: pointer;
-        }
-        
-        /* Hero Section */
-        .hero {
-            min-height: 100vh;
+
+        .social-links {
             display: flex;
             align-items: center;
-            padding-top: 80px;
+        }
+
+        .social-link {
+            color: #a8b2d1;
+            font-size: 1.2rem;
+            margin-left: 20px;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+
+        .social-link:hover {
+            color: #64ffda;
+            transform: translateY(-3px);
+        }
+
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+        }
+
+        .menu-toggle span {
+            width: 25px;
+            height: 3px;
+            background: #64ffda;
+            margin: 3px 0;
+            transition: 0.3s;
+        }
+
+        /* Dual Slideshow Banner Section */
+        .slideshow-banner {
+            position: relative;
+            height: 70vh;
+            overflow: hidden;
+            margin-top: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .slideshow-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .slide-content {
+            position: relative;
+            z-index: 3;
+            text-align: center;
+            max-width: 400px;
+            padding: 40px;
+            background: rgba(23, 42, 69, 0.7);
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(100, 255, 218, 0.2);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .slide-content h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, #64ffda, #52d1ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .slide-content p {
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+            color: #a8b2d1;
+        }
+
+        .slide-link {
+            display: inline-block;
+            padding: 12px 30px;
+            background: transparent;
+            color: #64ffda;
+            border: 1px solid #64ffda;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 600;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
         }
-        
+
+        .slide-link:hover {
+            background: rgba(100, 255, 218, 0.1);
+            box-shadow: 0 0 15px rgba(100, 255, 218, 0.4);
+            transform: translateY(-3px);
+        }
+
+        /* Dual Slideshow Layout (500x300px each) */
+        .left-slideshow, .right-slideshow {
+            position: relative;
+            width: 500px;
+            height: 300px;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+            z-index: 3;
+        }
+
+        .mini-slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .mini-slide.active {
+            opacity: 1;
+        }
+
+        .mini-slide-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 20px;
+            background: linear-gradient(transparent, rgba(10, 25, 47, 0.9));
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .mini-slideshow-nav {
+            position: absolute;
+            bottom: 15px;
+            right: 15px;
+            display: flex;
+            z-index: 4;
+        }
+
+        .mini-slide-indicator {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            margin: 0 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .mini-slide-indicator.active {
+            background: #64ffda;
+            transform: scale(1.2);
+        }
+
+        /* Particle Background */
         #particles-js {
             position: absolute;
             width: 100%;
             height: 100%;
             top: 0;
             left: 0;
-        }
-        
-        .hero-content {
-            position: relative;
             z-index: 1;
-            max-width: 800px;
         }
-        
-        .hero h1 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 4rem;
-            margin-bottom: 20px;
-            line-height: 1.2;
-            background: linear-gradient(to right, var(--primary), var(--secondary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+
+        /* Floating Elements */
+        .floating-elements {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1;
         }
-        
-        .hero p {
-            font-size: 1.2rem;
-            margin-bottom: 30px;
-            color: var(--gray);
+
+        .floating-element {
+            position: absolute;
+            opacity: 0.1;
+            color: #64ffda;
+            font-size: 2rem;
         }
-        
-        .btn {
-            display: inline-block;
-            padding: 12px 30px;
-            background: linear-gradient(to right, var(--primary), var(--secondary));
-            color: white;
-            border: none;
-            border-radius: 30px;
-            font-weight: 600;
-            text-decoration: none;
-            cursor: pointer;
-            transition: transform 0.3s, box-shadow 0.3s;
-            box-shadow: 0 5px 15px rgba(110, 68, 255, 0.4);
+
+        /* Animated Background Shapes */
+        .bg-shapes {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 0;
+            overflow: hidden;
         }
-        
-        .btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(110, 68, 255, 0.6);
+
+        .shape {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(100, 255, 218, 0.1);
+            animation: float 15s infinite linear;
         }
-        
-        /* Features Section */
-        .features {
+
+        .shape:nth-child(1) {
+            width: 300px;
+            height: 300px;
+            top: -150px;
+            left: -150px;
+            animation-delay: 0s;
+        }
+
+        .shape:nth-child(2) {
+            width: 200px;
+            height: 200px;
+            bottom: -100px;
+            right: 10%;
+            animation-delay: 3s;
+            animation-duration: 20s;
+        }
+
+        .shape:nth-child(3) {
+            width: 150px;
+            height: 150px;
+            top: 20%;
+            right: -75px;
+            animation-delay: 6s;
+            animation-duration: 25s;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes float {
+            0% {
+                transform: translate(0, 0) rotate(0deg);
+            }
+            33% {
+                transform: translate(30px, -50px) rotate(120deg);
+            }
+            66% {
+                transform: translate(-20px, 20px) rotate(240deg);
+            }
+            100% {
+                transform: translate(0, 0) rotate(360deg);
+            }
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                opacity: 0.7;
+            }
+            50% {
+                transform: scale(1.05);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 0.7;
+            }
+        }
+
+        @keyframes logoPulse {
+            0%, 100% {
+                box-shadow: 0 0 0 0 rgba(100, 255, 218, 0.4);
+            }
+            50% {
+                box-shadow: 0 0 0 10px rgba(100, 255, 218, 0);
+            }
+        }
+
+        /* Four Column Section */
+        .four-column-section {
             padding: 100px 0;
-            background: var(--dark);
+            background: #0a192f;
         }
-        
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
         .section-title {
             text-align: center;
             margin-bottom: 60px;
         }
-        
+
         .section-title h2 {
-            font-family: 'Orbitron', sans-serif;
             font-size: 2.5rem;
-            margin-bottom: 20px;
-            background: linear-gradient(to right, var(--primary), var(--secondary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        
-        .section-title p {
-            color: var(--gray);
-            max-width: 600px;
-            margin: 0 auto;
-        }
-        
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-        }
-        
-        .feature-card {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 15px;
-            padding: 30px;
-            text-align: center;
-            transition: transform 0.3s, box-shadow 0.3s;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        .feature-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
-        }
-        
-        .feature-icon {
-            width: 80px;
-            height: 80px;
-            background: linear-gradient(45deg, var(--primary), var(--secondary));
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 20px;
-            font-size: 30px;
-            color: white;
-        }
-        
-        .feature-card h3 {
-            font-size: 1.5rem;
             margin-bottom: 15px;
+            color: #e6f1ff;
         }
-        
-        .feature-card p {
-            color: var(--gray);
+
+        .section-title p {
+            font-size: 1.2rem;
+            color: #a8b2d1;
         }
-        
-        /* AI Showcase */
-        .ai-showcase {
-            padding: 100px 0;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .ai-content {
-            display: flex;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 40px;
-        }
-        
-        .ai-text {
-            flex: 1;
-            min-width: 300px;
-        }
-        
-        .ai-text h2 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 2.5rem;
-            margin-bottom: 20px;
-            background: linear-gradient(to right, var(--primary), var(--secondary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        
-        .ai-visual {
-            flex: 1;
-            min-width: 300px;
-            height: 400px;
-            position: relative;
-        }
-        
-        #neural-network {
-            width: 100%;
-            height: 100%;
-            border-radius: 15px;
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        /* Robotics Section */
-        .robotics {
-            padding: 100px 0;
-            background: var(--dark);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .robot-arm-container {
-            width: 100%;
-            height: 400px;
-            position: relative;
-            margin: 40px auto;
-        }
-        
-        #robot-arm {
-            width: 100%;
-            height: 100%;
-            border-radius: 15px;
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        /* Deep Learning Process */
-        .deep-learning {
-            padding: 100px 0;
-            position: relative;
-        }
-        
-        .process-steps {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 50px;
-            position: relative;
-        }
-        
-        .process-step {
-            text-align: center;
-            width: 200px;
-            position: relative;
-            z-index: 2;
-        }
-        
-        .step-icon {
-            width: 80px;
-            height: 80px;
-            margin: 0 auto 20px;
-            background: linear-gradient(45deg, var(--primary), var(--secondary));
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 30px;
-            color: white;
-            position: relative;
-        }
-        
-        .process-connector {
-            position: absolute;
-            top: 40px;
-            left: 0;
-            width: 100%;
-            height: 2px;
-            background: linear-gradient(to right, var(--primary), var(--secondary));
-            z-index: 1;
-        }
-        
-        .pulse-dot {
-            position: absolute;
-            width: 10px;
-            height: 10px;
-            background: var(--accent);
-            border-radius: 50%;
-            top: 35px;
-            left: 0;
-            animation: pulseMove 5s linear infinite;
-        }
-        
-        @keyframes pulseMove {
-            0% { left: 0; opacity: 0; }
-            10% { opacity: 1; }
-            90% { opacity: 1; }
-            100% { left: 100%; opacity: 0; }
-        }
-        
-        /* Data Visualization */
-        .data-viz {
-            padding: 100px 0;
-            background: var(--dark);
-        }
-        
-        .viz-container {
-            width: 100%;
-            height: 300px;
-            margin: 40px auto;
-            position: relative;
-        }
-        
-        #data-visualization {
-            width: 100%;
-            height: 100%;
-            border-radius: 15px;
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        /* Footer */
-        footer {
-            background: var(--darker);
-            padding: 60px 0 30px;
-        }
-        
-        .footer-content {
+
+        .four-column-layout {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 40px;
-            margin-bottom: 40px;
+            gap: 30px;
         }
-        
-        .footer-column h3 {
-            font-size: 1.2rem;
-            margin-bottom: 20px;
+
+        .column {
+            background: rgba(23, 42, 69, 0.7);
+            border-radius: 10px;
+            padding: 30px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
             position: relative;
-            padding-bottom: 10px;
+            overflow: hidden;
         }
-        
-        .footer-column h3::after {
+
+        .column:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .column::before {
             content: '';
             position: absolute;
-            bottom: 0;
+            top: 0;
             left: 0;
-            width: 40px;
-            height: 2px;
-            background: var(--secondary);
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, #64ffda, #52d1ff);
         }
-        
-        .footer-column p {
-            color: var(--gray);
+
+        .column-icon {
+            font-size: 2.5rem;
+            color: #64ffda;
             margin-bottom: 20px;
         }
-        
-        .footer-links {
-            list-style: none;
+
+        .column h2 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: #e6f1ff;
         }
-        
-        .footer-links li {
-            margin-bottom: 10px;
+
+        .column p {
+            color: #a8b2d1;
+            margin-bottom: 20px;
+            line-height: 1.6;
         }
-        
-        .footer-links a {
-            color: var(--gray);
-            text-decoration: none;
-            transition: color 0.3s;
-        }
-        
-        .footer-links a:hover {
-            color: var(--secondary);
-        }
-        
-        .social-icons {
-            display: flex;
-            gap: 15px;
-            margin-top: 20px;
-        }
-        
-        .social-icons a {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.1);
+
+        .visualization-container {
+            height: 150px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            background: rgba(10, 25, 47, 0.5);
             display: flex;
             align-items: center;
             justify-content: center;
-            color: var(--light);
-            transition: background 0.3s, transform 0.3s;
+            overflow: hidden;
         }
-        
-        .social-icons a:hover {
-            background: var(--primary);
-            transform: translateY(-3px);
+
+        .visualization-canvas {
+            width: 100%;
+            height: 100%;
         }
-        
+
+        .animated-list {
+            list-style: none;
+        }
+
+        .animated-list li {
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(100, 255, 218, 0.1);
+            color: #a8b2d1;
+            position: relative;
+            padding-left: 20px;
+        }
+
+        .animated-list li::before {
+            content: '▹';
+            position: absolute;
+            left: 0;
+            color: #64ffda;
+        }
+
+        /* Footer */
+        .footer {
+            background: #0a192f;
+            padding: 40px 0;
+            border-top: 1px solid rgba(100, 255, 218, 0.1);
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .footer-logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .footer-logo-img {
+            width: 40px;
+            height: 40px;
+            margin-right: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
+            background: linear-gradient(135deg, #64ffda, #52d1ff);
+        }
+
+        .footer-logo-inner {
+            width: 32px;
+            height: 32px;
+            background: #0a192f;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: #64ffda;
+            font-size: 1rem;
+        }
+
+        .footer-logo-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #64ffda;
+        }
+
+        .footer-social-links {
+            display: flex;
+        }
+
+        .footer-social-link {
+            color: #a8b2d1;
+            font-size: 1.2rem;
+            margin-left: 20px;
+            transition: color 0.3s ease;
+        }
+
+        .footer-social-link:hover {
+            color: #64ffda;
+        }
+
         .copyright {
             text-align: center;
-            padding-top: 30px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            color: var(--gray);
+            margin-top: 20px;
+            color: #a8b2d1;
             font-size: 0.9rem;
         }
-        
-        /* Animations */
-        @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-            100% { transform: translateY(0px); }
-        }
-        
-        .float-animation {
-            animation: float 5s ease-in-out infinite;
-        }
-        
-        @keyframes pulse {
-            0% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(1.05); opacity: 0.8; }
-            100% { transform: scale(1); opacity: 1; }
-        }
-        
-        .pulse-animation {
-            animation: pulse 2s ease-in-out infinite;
-        }
-        
+
         /* Responsive Design */
-        @media (max-width: 992px) {
-            .hero h1 {
-                font-size: 3rem;
-            }
-            
-            nav ul {
-                display: none;
-                position: absolute;
-                top: 80px;
-                left: 0;
-                width: 100%;
-                background: var(--dark);
+        @media (max-width: 1200px) {
+            .slideshow-container {
                 flex-direction: column;
-                padding: 20px;
-                box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-            }
-            
-            nav ul.show {
-                display: flex;
-            }
-            
-            nav ul li {
-                margin: 15px 0;
-            }
-            
-            .menu-btn {
-                display: block;
-            }
-            
-            .process-steps {
-                flex-direction: column;
-                align-items: center;
+                text-align: center;
+                justify-content: center;
                 gap: 40px;
             }
             
-            .process-connector {
-                width: 2px;
-                height: 100%;
-                top: 0;
-                left: 40px;
+            .slide-content {
+                max-width: 100%;
+                order: 3;
+                padding: 30px 20px;
             }
             
-            .pulse-dot {
-                top: 0;
-                left: 35px;
-                animation: pulseMoveVertical 5s linear infinite;
-            }
-            
-            @keyframes pulseMoveVertical {
-                0% { top: 0; opacity: 0; }
-                10% { opacity: 1; }
-                90% { opacity: 1; }
-                100% { top: 100%; opacity: 0; }
+            .left-slideshow, .right-slideshow {
+                width: 100%;
+                max-width: 500px;
+                margin: 0 auto;
             }
         }
-        
+
         @media (max-width: 768px) {
-            .hero h1 {
-                font-size: 2.5rem;
+            .slide-content h1 {
+                font-size: 2.2rem;
             }
             
-            .hero p {
+            .slide-content p {
+                font-size: 1.1rem;
+            }
+            
+            .left-slideshow, .right-slideshow {
+                height: 250px;
+            }
+            
+            .mini-slide-overlay {
+                font-size: 1rem;
+                padding: 15px;
+            }
+            
+            .four-column-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .menu-toggle {
+                display: flex;
+            }
+
+            .nav-menu {
+                position: fixed;
+                top: 70px;
+                right: -100%;
+                flex-direction: column;
+                background: rgba(10, 25, 47, 0.95);
+                width: 100%;
+                text-align: center;
+                transition: 0.3s;
+                box-shadow: 0 10px 27px rgba(0, 0, 0, 0.05);
+                padding: 20px 0;
+            }
+
+            .nav-menu.active {
+                right: 0;
+            }
+
+            .nav-item {
+                margin: 15px 0;
+            }
+
+            .social-links {
+                display: none;
+            }
+
+            .footer-content {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .footer-social-links {
+                margin-top: 20px;
+            }
+
+            .footer-social-link {
+                margin: 0 10px;
+            }
+
+            .logo-text {
+                font-size: 1.5rem;
+            }
+
+            .logo-subtitle {
+                font-size: 0.6rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .logo-container {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .logo-img {
+                margin-right: 0;
+                margin-bottom: 5px;
+            }
+
+            .logo-text {
+                font-size: 1.3rem;
+            }
+
+            .slideshow-banner {
+                height: 85vh;
+            }
+            
+            .slide-content h1 {
+                font-size: 1.8rem;
+            }
+            
+            .slide-content p {
                 font-size: 1rem;
             }
             
-            .section-title h2 {
-                font-size: 2rem;
+            .left-slideshow, .right-slideshow {
+                height: 200px;
             }
             
-            .ai-content, .robot-content {
-                flex-direction: column;
-            }
-        }
-        
-        @media (max-width: 576px) {
-            .hero h1 {
-                font-size: 2rem;
-            }
-            
-            .btn {
-                padding: 10px 20px;
+            .mini-slide-overlay {
+                font-size: 0.9rem;
+                padding: 12px;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Header -->
-    <header>
-        <div class="container header-content">
-            <div class="logo">
-                <i class="fas fa-brain"></i>
-                KKiran.com
+    <!-- Navigation Menu -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="#home" class="logo-container">
+                <div class="logo-img">
+                    <div class="logo-inner">KK</div>
+                </div>
+                <div>
+                    <div class="logo-text">KKiran.com</div>
+                    <div class="logo-subtitle">AI RESEARCH</div>
+                </div>
+            </a>
+            
+            <div class="menu-toggle" id="mobile-menu">
+                <span></span>
+                <span></span>
+                <span></span>
             </div>
-            <nav>
-                <button class="menu-btn" id="menuToggle">
-                    <i class="fas fa-bars"></i>
-                </button>
-                <ul id="menu">
-                    <li><a href="#home">Home</a></li>
-                    <li><a href="#features"></a></li>
-                    <li><a href="#ai">AI</a></li>
-                    <li><a href="#robotics">Robotics</a></li>
-                    <li><a href="#deep-learning">Deep Learning</a></li>
-                    <li><a href="#contact">Contact</a></li>
-                </ul>
-            </nav>
+            
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="#home" class="nav-link">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#four-columns" class="nav-link">Expertise</a>
+                </li>
+                <li class="nav-item">
+                    <a href="https://kkiran.com" class="nav-link" target="_blank">Blog</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#contact" class="nav-link">Contact</a>
+                </li>
+            </ul>
+            
+            <div class="social-links">
+                <a href="https://www.linkedin.com/in/kinnera-kiran/" class="social-link" target="_blank">
+                    <i class="fab fa-linkedin"></i>
+                </a>
+                <a href="https://x.com/KKiranAI" class="social-link" target="_blank">
+                    <i class="fab fa-twitter"></i>
+                </a>
+                <a href="https://github.com/MrKinneraKiran" class="social-link" target="_blank">
+                    <i class="fab fa-github"></i>
+                </a>
+                <a href="https://scholar.google.com/citations?user=yourprofile" class="social-link" target="_blank">
+                    <i class="fab fa-google"></i>
+                </a>
+            </div>
         </div>
-    </header>
+    </nav>
 
-    <!-- Hero Section -->
-    <section class="hero" id="home">
+    <!-- Dual Slideshow Banner Section -->
+    <section class="slideshow-banner" id="home">
+        <div class="slideshow-container">
+            <!-- Left Slideshow -->
+            <div class="left-slideshow">
+                <div class="mini-slide active" style="background-image: url('https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80')">
+                    <div class="mini-slide-overlay">Industrial Automation</div>
+                </div>
+                <div class="mini-slide" style="background-image: url('https://images.unsplash.com/photo-1581092580497-e0d23cbdf1dc?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80')">
+                    <div class="mini-slide-overlay">Machine Learning</div>
+                </div>
+                <div class="mini-slide" style="background-image: url('https://images.unsplash.com/photo-1581092580497-e0d23cbdf1dc?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80')">
+                    <div class="mini-slide-overlay">Computer Vision</div>
+                </div>
+                <div class="mini-slide" style="background-image: url('https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80')">
+                    <div class="mini-slide-overlay">Research & Development</div>
+                </div>
+                
+                <div class="mini-slideshow-nav">
+                    <div class="mini-slide-indicator active" data-slide="0"></div>
+                    <div class="mini-slide-indicator" data-slide="1"></div>
+                    <div class="mini-slide-indicator" data-slide="2"></div>
+                    <div class="mini-slide-indicator" data-slide="3"></div>
+                </div>
+            </div>
+            
+            <!-- Main Content -->
+            <div class="slide-content">
+                <h1>K Kiran</h1>
+                <p>Pioneering research and innovative applications in artificial intelligence, industrial automation, and advanced image processing techniques.</p>
+                <a href="#four-columns" class="slide-link">Explore My Expertise</a>
+            </div>
+            
+            <!-- Right Slideshow -->
+            <div class="right-slideshow">
+                <div class="mini-slide active" style="background-image: url('https://images.unsplash.com/photo-1677442136019-21780ecad995?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80')">
+                    <div class="mini-slide-overlay">AI Research & Neural Networks</div>
+                </div>
+                <div class="mini-slide" style="background-image: url('https://images.unsplash.com/photo-1485827404703-89b55fcc595e?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80')">
+                    <div class="mini-slide-overlay">Robotics & Automation Systems</div>
+                </div>
+                <div class="mini-slide" style="background-image: url('https://images.unsplash.com/photo-1555949963-aa79dcee981c?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80')">
+                    <div class="mini-slide-overlay">Advanced Image Processing</div>
+                </div>
+                <div class="mini-slide" style="background-image: url('https://images.unsplash.com/photo-1501504905252-473c47e087f8?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80')">
+                    <div class="mini-slide-overlay">Research Publications</div>
+                </div>
+                
+                <div class="mini-slideshow-nav">
+                    <div class="mini-slide-indicator active" data-slide="0"></div>
+                    <div class="mini-slide-indicator" data-slide="1"></div>
+                    <div class="mini-slide-indicator" data-slide="2"></div>
+                    <div class="mini-slide-indicator" data-slide="3"></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Background Elements -->
+        <div class="bg-shapes">
+            <div class="shape"></div>
+            <div class="shape"></div>
+            <div class="shape"></div>
+        </div>
+        
         <div id="particles-js"></div>
-        <div class="container hero-content">
-            <h1>K. Kiran           -  Artificial intelligence (AI) , Automation & Robotics</h1>
-            <p>KKiran.com combines cutting-edge artificial intelligence with Robotic Process Automation that push the boundaries of technology and design.</p>
-            <a href="#features" class="btn">Explore Now</a>
-            <img src="https://lh5.googleusercontent.com/5A9gkbexZVLmWJT70kSj1aeTznfIKqEkvvAmCT0PYGO39guG61T8QUmaPQomhcQFBavN7yfzuEuH3XLUobcVPZ39Izlpyk97kjL8ohQYyklbAc-M02kVFdYZODcLtFqiGVYZxHQBrYzjU164YMVTpWwqwteQFeJUVEhFGphke4qmCJvCf84EpQ=w1280" alt="K Kiran">
-
+        
+        <div class="floating-elements">
+            <i class="fas fa-brain floating-element" style="top: 20%; left: 10%; animation: float 20s infinite linear;"></i>
+            <i class="fas fa-robot floating-element" style="top: 60%; left: 85%; animation: float 25s infinite linear reverse;"></i>
+            <i class="fas fa-camera floating-element" style="top: 80%; left: 15%; animation: float 18s infinite linear;"></i>
+            <i class="fas fa-microchip floating-element" style="top: 30%; left: 80%; animation: float 22s infinite linear reverse;"></i>
+            <i class="fas fa-atom floating-element" style="top: 70%; left: 20%; animation: float 30s infinite linear;"></i>
+            <i class="fas fa-project-diagram floating-element" style="top: 40%; left: 70%; animation: float 28s infinite linear reverse;"></i>
         </div>
     </section>
 
-    <!-- Features Section -->
-    <section class="features" id="features">
+    <!-- Four Column Layout Section -->
+    <section class="four-column-section" id="four-columns">
         <div class="container">
             <div class="section-title">
-                <h2>Cutting edge Technologies </h2>
-                <p>Discover the innovative capabilities that make K Kiran.com a leader in AI-powered  solutions</p>
+                <h2>Areas of Expertise</h2>
+                <p>Comprehensive overview of my research and professional focus areas</p>
             </div>
-            <div class="features-grid">
-                <div class="feature-card float-animation">
-                    <div class="feature-icon">
+            
+            <div class="four-column-layout">
+                <!-- AI Column -->
+                <div class="column ai-column" id="ai-section">
+                    <div class="column-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h2>Artificial Intelligence</h2>
+                    <p>Advanced AI algorithms, neural networks, and machine learning applications for solving complex problems in science and engineering.</p>
+                    
+                    <div class="visualization-container">
+                        <canvas id="ai-visualization" class="visualization-canvas"></canvas>
+                    </div>
+                    
+                    <ul class="animated-list">
+                        <li>Neural Network Design & Optimization</li>
+                        <li>Machine Learning Algorithms</li>
+                        <li>Deep Learning Applications</li>
+                        <li>Predictive Analytics</li>
+                        <li>Natural Language Processing</li>
+                    </ul>
+                </div>
+                
+                <!-- Robotics Column -->
+                <div class="column robotics-column" id="robotics-section">
+                    <div class="column-icon">
                         <i class="fas fa-robot"></i>
                     </div>
-                    <h3>AI Integration</h3>
-                    <p>Advanced machine learning algorithms that adapt and optimize visual content in real-time.</p>
-                </div>
-                <div class="feature-card float-animation" style="animation-delay: 0.5s;">
-                    <div class="feature-icon">
-                        <i class="fas fa-paint-brush"></i>
+                    <h2>Robotics & Automation</h2>
+                    <p>Industrial automation, robotic systems, and process control solutions for enhanced efficiency and precision in manufacturing.</p>
+                    
+                    <div class="visualization-container">
+                        <canvas id="robotics-visualization" class="visualization-canvas"></canvas>
                     </div>
-                    <h3>Automation </h3>
-                    <p>Industry 5.0 based automation </p>
+                    
+                    <ul class="animated-list">
+                        <li>Industrial Process Automation</li>
+                        <li>Robotic Arm Control Systems</li>
+                        <li>Sensor Integration</li>
+                        <li>Motion Planning Algorithms</li>
+                        <li>Human-Robot Collaboration</li>
+                    </ul>
                 </div>
-                <div class="feature-card float-animation" style="animation-delay: 1s;">
-                    <div class="feature-icon">
-                        <i class="fas fa-film"></i>
+                
+                <!-- Image Processing Column -->
+                <div class="column image-processing-column" id="image-processing-section">
+                    <div class="column-icon">
+                        <i class="fas fa-camera"></i>
                     </div>
-                    <h3>Robotics</h3>
-                    <p>Robotic process Automation in the Insustrial sector .</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- AI Showcase -->
-    <section class="ai-showcase" id="ai">
-        <div class="container">
-            <div class="ai-content">
-                <div class="ai-text">
-                    <h2>Neural Network Visualization</h2>
-                    <p>Our proprietary AI technology uses deep learning neural networks to generate and optimize graphics in real-time. Watch as the network learns and adapts to create increasingly sophisticated visual outputs.</p>
-                    <p>The visualization to the right represents the interconnected nodes of our neural network, with data flowing through the system and evolving based on user interaction and environmental variables.</p>
-                    <a href="#" class="btn">Learn More</a>
-                </div>
-                <div class="ai-visual">
-                    <div id="neural-network"></div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Robotics Section -->
-    <section class="robotics" id="robotics">
-        <div class="container">
-            <div class="section-title">
-                <h2>Robotics Integration</h2>
-                <p>Our AI systems power next-generation robotics with advanced computer vision and motion planning</p>
-            </div>
-            <div class="robot-arm-container">
-                <div id="robot-arm"></div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Deep Learning Process -->
-    <section class="deep-learning" id="deep-learning">
-        <div class="container">
-            <div class="section-title">
-                <h2>Deep Learning Process</h2>
-                <p>Our AI systems continuously learn and improve through an iterative process of data analysis</p>
-            </div>
-            <div class="process-steps">
-                <div class="process-connector">
-                    <div class="pulse-dot"></div>
-                </div>
-                <div class="process-step">
-                    <div class="step-icon">
-                        <i class="fas fa-database"></i>
+                    <h2>Image Processing</h2>
+                    <p>Advanced algorithms for image analysis, recognition and enhancement with applications in scientific research and industry. Also in the area of Disease iagnosis applications for various Image Processing based approaches </p>
+                    
+                    <div class="visualization-container">
+                        <canvas id="image-processing-visualization" class="visualization-canvas"></canvas>
                     </div>
-                    <h3>Data Collection</h3>
-                    <p>Gathering and preparing training data</p>
+                    
+                    <ul class="animated-list">
+                        <li>Computer Vision Algorithms</li>
+                        <li>Pattern Recognition</li>
+                        <li>Image Enhancement</li>
+                        <li>Object Detection & Tracking</li>
+                        <li>3D Reconstruction</li>
+                    </ul>
                 </div>
-                <div class="process-step">
-                    <div class="step-icon">
-                        <i class="fas fa-project-diagram"></i>
+                
+                <!-- Achievements Column -->
+                <div class="column achievements-column">
+                    <div class="column-icon">
+                        <i class="fas fa-trophy"></i>
                     </div>
-                    <h3>Model Training</h3>
-                    <p>Training neural networks on powerful GPUs</p>
-                </div>
-                <div class="process-step">
-                    <div class="step-icon">
-                        <i class="fas fa-chart-line"></i>
+                    <h2>Achievements</h2>
+                    <p>Professional recognition and significant contributions to the field of Artificial Intelligence, Image Processing  robotics, Process Instrumentation and automation over 20+ years.</p>
+                    
+                    <div class="visualization-container">
+                        <canvas id="achievements-visualization" class="visualization-canvas"></canvas>
                     </div>
-                    <h3>Evaluation</h3>
-                    <p>Testing and refining model performance</p>
+                    
+                    <ul class="animated-list">
+                        <li>CSIR-IICT R&D Services Award</li>
+                        <li>Senior Member, IEEE</li>
+                        <li>Fellow, IETE & IEI</li>
+                        <li>20+ Years of Experience</li>
+                        <li>Senior Member, ISA</li>
+                        <li>Nature India Research Highlight</li>
+                    </ul>
                 </div>
-                <div class="process-step">
-                    <div class="step-icon">
-                        <i class="fas fa-rocket"></i>
-                    </div>
-                    <h3>Deployment</h3>
-                    <p>Implementing models in production environments</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Data Visualization -->
-    <section class="data-viz">
-        <div class="container">
-            <div class="section-title">
-                <h2>Real-time Data Visualization</h2>
-                <p>Our systems process and visualize complex data streams in real-time for actionable insights</p>
-            </div>
-            <div class="viz-container">
-                <div id="data-visualization"></div>
             </div>
         </div>
     </section>
 
     <!-- Footer -->
-    <footer id="contact">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-column">
-                    <h3>About KKiran.com</h3>
-                    <p>We're at the forefront of combining artificial intelligence with Robotics technology to create Future advanced technology</p>
-                    <div class="social-icons">
-                        <a href="#"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#"><i class="fab fa-twitter"></i></a>
-                        <a href="#"><i class="fab fa-instagram"></i></a>
-                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
-                    </div>
+    <footer class="footer" id="contact">
+        <div class="footer-content">
+            <div class="footer-logo">
+                <div class="footer-logo-img">
+                    <div class="footer-logo-inner">KK</div>
                 </div>
-                <div class="footer-column">
-                    <h3>Quick Links</h3>
-                    <ul class="footer-links">
-                        <li><a href="#home">Home</a></li>
-                        <li><a href="#features">Features</a></li>
-                        <li><a href="#ai">AI Technology</a></li>
-                        <li><a href="#robotics">Robotics</a></li>
-                        <li><a href="#deep-learning">Deep Learning</a></li>
-                        <li><a href="#contact">Contact Us</a></li>
-                    </ul>
-                </div>
-                <div class="footer-column">
-                    <h3>Contact Info</h3>
-                    <ul class="footer-links">
-                        <li><i class="fas fa-map-marker-alt"></i> Hyderabad, India</li>
-                        <li><i class="fas fa-phone"></i> </li>
-                        <li><i class="fas fa-envelope"></i> </li>
-                    </ul>
-                </div>
+                <div class="footer-logo-text">KKiran.com</div>
             </div>
-            <div class="copyright">
-                <p>&copy; 2023 KKiran.com - All Rights Reserved</p>
+            <div class="footer-social-links">
+                <a href="https://kkiran.com" class="footer-social-link" target="_blank">
+                    <i class="fas fa-globe"></i>
+                </a>
+                <a href="https://www.linkedin.com/in/kinnera-kiran/" class="footer-social-link" target="_blank">
+                    <i class="fab fa-linkedin"></i>
+                </a>
+                <a href="https://x.com/KKiranAI" class="footer-social-link" target="_blank">
+                    <i class="fab fa-twitter"></i>
+                </a>
+                <a href="https://github.com/MrKinneraKiran" class="footer-social-link" target="_blank">
+                    <i class="fab fa-github"></i>
+                </a>
+                <a href="https://scholar.google.com/citations?user=yourprofile" class="footer-social-link" target="_blank">
+                    <i class="fab fa-google"></i>
+                </a>
             </div>
+        </div>
+        <div class="copyright">
+            &copy; 2023 K Kiran . All rights reserved.
         </div>
     </footer>
 
+    <!-- Particle.js Library -->
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    
     <script>
-        // Particles.js initialization
+        // Initialize particles.js
         document.addEventListener('DOMContentLoaded', function() {
             particlesJS('particles-js', {
                 particles: {
-                    number: { value: 80, density: { enable: true, value_area: 800 } },
-                    color: { value: "#6e44ff" },
-                    shape: { type: "circle" },
-                    opacity: { value: 0.5, random: true },
-                    size: { value: 3, random: true },
+                    number: {
+                        value: 80,
+                        density: {
+                            enable: true,
+                            value_area: 800
+                        }
+                    },
+                    color: {
+                        value: "#64ffda"
+                    },
+                    shape: {
+                        type: "circle",
+                        stroke: {
+                            width: 0,
+                            color: "#000000"
+                        }
+                    },
+                    opacity: {
+                        value: 0.5,
+                        random: true,
+                        anim: {
+                            enable: true,
+                            speed: 1,
+                            opacity_min: 0.1,
+                            sync: false
+                        }
+                    },
+                    size: {
+                        value: 3,
+                        random: true,
+                        anim: {
+                            enable: true,
+                            speed: 2,
+                            size_min: 0.1,
+                            sync: false
+                        }
+                    },
                     line_linked: {
                         enable: true,
                         distance: 150,
-                        color: "#6e44ff",
+                        color: "#52d1ff",
                         opacity: 0.4,
                         width: 1
                     },
@@ -810,315 +1044,361 @@
                         speed: 2,
                         direction: "none",
                         random: true,
+                        straight: false,
                         out_mode: "out",
-                        bounce: false
+                        bounce: false,
+                        attract: {
+                            enable: false,
+                            rotateX: 600,
+                            rotateY: 1200
+                        }
                     }
                 },
                 interactivity: {
                     detect_on: "canvas",
                     events: {
-                        onhover: { enable: true, mode: "repulse" },
-                        onclick: { enable: true, mode: "push" }
+                        onhover: {
+                            enable: true,
+                            mode: "grab"
+                        },
+                        onclick: {
+                            enable: true,
+                            mode: "push"
+                        },
+                        resize: true
+                    },
+                    modes: {
+                        grab: {
+                            distance: 140,
+                            line_linked: {
+                                opacity: 1
+                            }
+                        },
+                        push: {
+                            particles_nb: 4
+                        }
                     }
-                }
+                },
+                retina_detect: true
             });
             
-            // Header scroll effect
-            const header = document.querySelector('header');
+            // Initialize dual slideshows
+            initSlideshow('left-slideshow');
+            initSlideshow('right-slideshow');
+            
+            // Create simple canvas visualizations
+            createVisualizations();
+            
+            // Navbar scroll effect
             window.addEventListener('scroll', function() {
+                const navbar = document.querySelector('.navbar');
                 if (window.scrollY > 50) {
-                    header.classList.add('scrolled');
+                    navbar.classList.add('scrolled');
                 } else {
-                    header.classList.remove('scrolled');
+                    navbar.classList.remove('scrolled');
                 }
             });
             
             // Mobile menu toggle
-            const menuToggle = document.getElementById('menuToggle');
-            const menu = document.getElementById('menu');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const navMenu = document.querySelector('.nav-menu');
             
-            menuToggle.addEventListener('click', function() {
-                menu.classList.toggle('show');
+            mobileMenu.addEventListener('click', function() {
+                mobileMenu.classList.toggle('active');
+                navMenu.classList.toggle('active');
             });
             
-            // Simple neural network visualization with Three.js
-            const initNeuralNetwork = () => {
-                const neuralNetworkSection = document.getElementById('neural-network');
-                if (!neuralNetworkSection) return;
-                
-                // Set up scene
-                const scene = new THREE.Scene();
-                const camera = new THREE.PerspectiveCamera(75, neuralNetworkSection.offsetWidth / neuralNetworkSection.offsetHeight, 0.1, 1000);
-                const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-                renderer.setSize(neuralNetworkSection.offsetWidth, neuralNetworkSection.offsetHeight);
-                neuralNetworkSection.appendChild(renderer.domElement);
-                
-                // Create nodes and connections
-                const nodes = [];
-                const connections = [];
-                
-                // Create node geometry
-                const nodeGeometry = new THREE.SphereGeometry(0.5, 32, 32);
-                const nodeMaterial = new THREE.MeshPhongMaterial({ 
-                    color: 0x6e44ff,
-                    emissive: 0x6e44ff,
-                    emissiveIntensity: 0.2
-                });
-                
-                // Create 10 nodes in a neural network-like structure
-                for (let i = 0; i < 10; i++) {
-                    const layer = Math.floor(i / 3);
-                    const node = new THREE.Mesh(nodeGeometry, nodeMaterial);
-                    node.position.x = (layer - 1.5) * 3;
-                    node.position.y = (i % 3 - 1) * 2;
-                    node.position.z = Math.random() * 2 - 1;
-                    scene.add(node);
-                    nodes.push(node);
-                }
-                
-                // Create connections between nodes
-                const connectionMaterial = new THREE.LineBasicMaterial({ 
-                    color: 0x00e5ff,
-                    transparent: true,
-                    opacity: 0.6
-                });
-                
-                for (let i = 0; i < nodes.length; i++) {
-                    for (let j = i + 1; j < nodes.length; j++) {
-                        if (Math.random() > 0.7) { // Only connect some nodes
-                            const connectionGeometry = new THREE.BufferGeometry().setFromPoints([
-                                new THREE.Vector3(nodes[i].position.x, nodes[i].position.y, nodes[i].position.z),
-                                new THREE.Vector3(nodes[j].position.x, nodes[j].position.y, nodes[j].position.z)
-                            ]);
-                            const connection = new THREE.Line(connectionGeometry, connectionMaterial);
-                            scene.add(connection);
-                            connections.push(connection);
-                        }
-                    }
-                }
-                
-                // Add lights
-                const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
-                scene.add(ambientLight);
-                
-                const directionalLight = new THREE.DirectionalLight(0x00e5ff, 1);
-                directionalLight.position.set(5, 5, 5);
-                scene.add(directionalLight);
-                
-                // Position camera
-                camera.position.z = 10;
-                
-                // Animation
-                function animate() {
-                    requestAnimationFrame(animate);
-                    
-                    // Animate nodes
-                    nodes.forEach(node => {
-                        node.rotation.x += 0.01;
-                        node.rotation.y += 0.01;
-                    });
-                    
-                    // Animate connections
-                    connections.forEach(connection => {
-                        connection.material.opacity = 0.3 + Math.sin(Date.now() * 0.001) * 0.3;
-                    });
-                    
-                    renderer.render(scene, camera);
-                }
-                
-                animate();
-                
-                // Handle window resize
-                window.addEventListener('resize', function() {
-                    camera.aspect = neuralNetworkSection.offsetWidth / neuralNetworkSection.offsetHeight;
-                    camera.updateProjectionMatrix();
-                    renderer.setSize(neuralNetworkSection.offsetWidth, neuralNetworkSection.offsetHeight);
-                });
-            };
-            
-            // Initialize robot arm visualization
-            const initRobotArm = () => {
-                const robotArmSection = document.getElementById('robot-arm');
-                if (!robotArmSection) return;
-                
-                // Set up scene
-                const scene = new THREE.Scene();
-                const camera = new THREE.PerspectiveCamera(75, robotArmSection.offsetWidth / robotArmSection.offsetHeight, 0.1, 1000);
-                const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-                renderer.setSize(robotArmSection.offsetWidth, robotArmSection.offsetHeight);
-                robotArmSection.appendChild(renderer.domElement);
-                
-                // Create robot arm parts
-                const baseGeometry = new THREE.CylinderGeometry(2, 2, 1, 32);
-                const baseMaterial = new THREE.MeshPhongMaterial({ color: 0x6e44ff });
-                const base = new THREE.Mesh(baseGeometry, baseMaterial);
-                scene.add(base);
-                
-                const arm1Geometry = new THREE.BoxGeometry(1, 5, 1);
-                const arm1Material = new THREE.MeshPhongMaterial({ color: 0x00e5ff });
-                const arm1 = new THREE.Mesh(arm1Geometry, arm1Material);
-                arm1.position.y = 3;
-                scene.add(arm1);
-                
-                const jointGeometry = new THREE.SphereGeometry(1.2, 32, 32);
-                const jointMaterial = new THREE.MeshPhongMaterial({ color: 0xff2e63 });
-                const joint = new THREE.Mesh(jointGeometry, jointMaterial);
-                joint.position.y = 5.5;
-                scene.add(joint);
-                
-                const arm2Geometry = new THREE.BoxGeometry(1, 4, 1);
-                const arm2Material = new THREE.MeshPhongMaterial({ color: 0x00e5ff });
-                const arm2 = new THREE.Mesh(arm2Geometry, arm2Material);
-                arm2.position.y = 7.5;
-                scene.add(arm2);
-                
-                const endEffectorGeometry = new THREE.ConeGeometry(1, 2, 32);
-                const endEffectorMaterial = new THREE.MeshPhongMaterial({ color: 0x6e44ff });
-                const endEffector = new THREE.Mesh(endEffectorGeometry, endEffectorMaterial);
-                endEffector.position.y = 9.5;
-                endEffector.rotation.x = Math.PI;
-                scene.add(endEffector);
-                
-                // Add lights
-                const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
-                scene.add(ambientLight);
-                
-                const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
-                directionalLight.position.set(5, 5, 5);
-                scene.add(directionalLight);
-                
-                // Position camera
-                camera.position.z = 15;
-                camera.position.y = 5;
-                
-                // Animation
-                let time = 0;
-                function animate() {
-                    requestAnimationFrame(animate);
-                    time += 0.01;
-                    
-                    // Animate robot arm
-                    joint.rotation.z = Math.sin(time) * 0.5;
-                    arm2.rotation.z = Math.sin(time) * 0.5;
-                    endEffector.rotation.z = Math.sin(time) * 0.5;
-                    
-                    renderer.render(scene, camera);
-                }
-                
-                animate();
-                
-                // Handle window resize
-                window.addEventListener('resize', function() {
-                    camera.aspect = robotArmSection.offsetWidth / robotArmSection.offsetHeight;
-                    camera.updateProjectionMatrix();
-                    renderer.setSize(robotArmSection.offsetWidth, robotArmSection.offsetHeight);
-                });
-            };
-            
-            // Initialize data visualization
-            const initDataVisualization = () => {
-                const dataVizSection = document.getElementById('data-visualization');
-                if (!dataVizSection) return;
-                
-                // Set up scene
-                const scene = new THREE.Scene();
-                const camera = new THREE.PerspectiveCamera(75, dataVizSection.offsetWidth / dataVizSection.offsetHeight, 0.1, 1000);
-                const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-                renderer.setSize(dataVizSection.offsetWidth, dataVizSection.offsetHeight);
-                dataVizSection.appendChild(renderer.domElement);
-                
-                // Create data points
-                const dataPoints = [];
-                const pointGeometry = new THREE.SphereGeometry(0.2, 16, 16);
-                const pointMaterial = new THREE.MeshPhongMaterial({ color: 0x6e44ff });
-                
-                for (let i = 0; i < 100; i++) {
-                    const point = new THREE.Mesh(pointGeometry, pointMaterial);
-                    point.position.x = (Math.random() - 0.5) * 10;
-                    point.position.y = (Math.random() - 0.5) * 10;
-                    point.position.z = (Math.random() - 0.5) * 10;
-                    point.originalPosition = point.position.clone();
-                    scene.add(point);
-                    dataPoints.push(point);
-                }
-                
-                // Add connections between points
-                const connectionMaterial = new THREE.LineBasicMaterial({ 
-                    color: 0x00e5ff,
-                    transparent: true,
-                    opacity: 0.3
-                });
-                
-                const connections = [];
-                for (let i = 0; i < dataPoints.length; i++) {
-                    for (let j = i + 1; j < dataPoints.length; j++) {
-                        if (Math.random() > 0.95) {
-                            const connectionGeometry = new THREE.BufferGeometry().setFromPoints([
-                                dataPoints[i].position,
-                                dataPoints[j].position
-                            ]);
-                            const connection = new THREE.Line(connectionGeometry, connectionMaterial);
-                            scene.add(connection);
-                            connections.push({
-                                line: connection,
-                                point1: dataPoints[i],
-                                point2: dataPoints[j]
-                            });
-                        }
-                    }
-                }
-                
-                // Add lights
-                const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
-                scene.add(ambientLight);
-                
-                const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
-                directionalLight.position.set(5, 5, 5);
-                scene.add(directionalLight);
-                
-                // Position camera
-                camera.position.z = 15;
-                
-                // Animation
-                let time = 0;
-                function animate() {
-                    requestAnimationFrame(animate);
-                    time += 0.01;
-                    
-                    // Animate data points
-                    dataPoints.forEach(point => {
-                        point.position.x = point.originalPosition.x + Math.sin(time + point.originalPosition.y) * 0.5;
-                        point.position.y = point.originalPosition.y + Math.cos(time + point.originalPosition.x) * 0.5;
-                        point.position.z = point.originalPosition.z + Math.sin(time + point.originalPosition.z) * 0.5;
-                    });
-                    
-                    // Update connections
-                    connections.forEach(conn => {
-                        conn.line.geometry.setFromPoints([
-                            conn.point1.position,
-                            conn.point2.position
-                        ]);
-                        conn.line.geometry.attributes.position.needsUpdate = true;
-                    });
-                    
-                    renderer.render(scene, camera);
-                }
-                
-                animate();
-                
-                // Handle window resize
-                window.addEventListener('resize', function() {
-                    camera.aspect = dataVizSection.offsetWidth / dataVizSection.offsetHeight;
-                    camera.updateProjectionMatrix();
-                    renderer.setSize(dataVizSection.offsetWidth, dataVizSection.offsetHeight);
-                });
-            };
-            
-            // Initialize all visualizations
-            initNeuralNetwork();
-            initRobotArm();
-            initDataVisualization();
+            // Close mobile menu when clicking on a link
+            document.querySelectorAll('.nav-link').forEach(n => n.addEventListener('click', () => {
+                mobileMenu.classList.remove('active');
+                navMenu.classList.remove('active');
+            }));
         });
+        
+        // NEW: Dual Slideshow functionality
+        function initSlideshow(slideshowId) {
+            const slideshow = document.querySelector(`.${slideshowId}`);
+            const slides = slideshow.querySelectorAll('.mini-slide');
+            const indicators = slideshow.querySelectorAll('.mini-slide-indicator');
+            let currentSlide = 0;
+            let slideInterval;
+            
+            // Function to show a specific slide
+            function showSlide(index) {
+                // Remove active class from all slides and indicators
+                slides.forEach(slide => slide.classList.remove('active'));
+                indicators.forEach(indicator => indicator.classList.remove('active'));
+                
+                // Add active class to current slide and indicator
+                slides[index].classList.add('active');
+                indicators[index].classList.add('active');
+                
+                currentSlide = index;
+            }
+            
+            // Function to show next slide
+            function nextSlide() {
+                let nextIndex = (currentSlide + 1) % slides.length;
+                showSlide(nextIndex);
+            }
+            
+            // Start automatic slideshow
+            function startSlideshow() {
+                slideInterval = setInterval(nextSlide, 4000); // Change slide every 4 seconds
+            }
+            
+            // Pause slideshow on hover
+            slideshow.addEventListener('mouseenter', () => {
+                clearInterval(slideInterval);
+            });
+            
+            slideshow.addEventListener('mouseleave', () => {
+                startSlideshow();
+            });
+            
+            // Event listeners for indicators
+            indicators.forEach((indicator, index) => {
+                indicator.addEventListener('click', () => {
+                    showSlide(index);
+                });
+            });
+            
+            // Start the slideshow
+            startSlideshow();
+        }
+        
+        function createVisualizations() {
+            // AI Visualization - Neural Network
+            const aiCanvas = document.getElementById('ai-visualization');
+            const aiCtx = aiCanvas.getContext('2d');
+            
+            // Set canvas dimensions
+            aiCanvas.width = aiCanvas.offsetWidth;
+            aiCanvas.height = aiCanvas.offsetHeight;
+            
+            // Draw neural network visualization
+            function drawNeuralNetwork() {
+                aiCtx.clearRect(0, 0, aiCanvas.width, aiCanvas.height);
+                
+                // Draw nodes and connections
+                const layers = 4;
+                const nodesPerLayer = [3, 4, 4, 2];
+                const nodeRadius = 8;
+                const layerSpacing = aiCanvas.width / (layers + 1);
+                const verticalPadding = 40;
+                
+                // Draw connections
+                aiCtx.strokeStyle = 'rgba(100, 255, 218, 0.3)';
+                aiCtx.lineWidth = 1;
+                
+                for (let l = 0; l < layers - 1; l++) {
+                    for (let i = 0; i < nodesPerLayer[l]; i++) {
+                        const x1 = (l + 1) * layerSpacing;
+                        const y1 = verticalPadding + (aiCanvas.height - 2 * verticalPadding) * i / (nodesPerLayer[l] - 1);
+                        
+                        for (let j = 0; j < nodesPerLayer[l + 1]; j++) {
+                            const x2 = (l + 2) * layerSpacing;
+                            const y2 = verticalPadding + (aiCanvas.height - 2 * verticalPadding) * j / (nodesPerLayer[l + 1] - 1);
+                            
+                            aiCtx.beginPath();
+                            aiCtx.moveTo(x1, y1);
+                            aiCtx.lineTo(x2, y2);
+                            aiCtx.stroke();
+                        }
+                    }
+                }
+                
+                // Draw nodes
+                for (let l = 0; l < layers; l++) {
+                    for (let i = 0; i < nodesPerLayer[l]; i++) {
+                        const x = (l + 1) * layerSpacing;
+                        const y = verticalPadding + (aiCanvas.height - 2 * verticalPadding) * i / (nodesPerLayer[l] - 1);
+                        
+                        // Node gradient
+                        const gradient = aiCtx.createRadialGradient(x, y, 0, x, y, nodeRadius);
+                        gradient.addColorStop(0, '#64ffda');
+                        gradient.addColorStop(1, 'rgba(100, 255, 218, 0.3)');
+                        
+                        aiCtx.beginPath();
+                        aiCtx.arc(x, y, nodeRadius, 0, Math.PI * 2);
+                        aiCtx.fillStyle = gradient;
+                        aiCtx.fill();
+                    }
+                }
+            }
+            
+            drawNeuralNetwork();
+            
+            // Robotics Visualization - Robot Arm
+            const roboticsCanvas = document.getElementById('robotics-visualization');
+            const roboticsCtx = roboticsCanvas.getContext('2d');
+            
+            roboticsCanvas.width = roboticsCanvas.offsetWidth;
+            roboticsCanvas.height = roboticsCanvas.offsetHeight;
+            
+            let angle = 0;
+            
+            function drawRobotArm() {
+                roboticsCtx.clearRect(0, 0, roboticsCanvas.width, roboticsCanvas.height);
+                
+                const centerX = roboticsCanvas.width / 2;
+                const centerY = roboticsCanvas.height / 2;
+                
+                // Base
+                roboticsCtx.fillStyle = '#233554';
+                roboticsCtx.beginPath();
+                roboticsCtx.arc(centerX, centerY, 20, 0, Math.PI * 2);
+                roboticsCtx.fill();
+                
+                // First segment
+                const segment1Length = 40;
+                const endX1 = centerX + Math.cos(angle) * segment1Length;
+                const endY1 = centerY + Math.sin(angle) * segment1Length;
+                
+                roboticsCtx.strokeStyle = '#64ffda';
+                roboticsCtx.lineWidth = 8;
+                roboticsCtx.beginPath();
+                roboticsCtx.moveTo(centerX, centerY);
+                roboticsCtx.lineTo(endX1, endY1);
+                roboticsCtx.stroke();
+                
+                // Joint
+                roboticsCtx.fillStyle = '#52d1ff';
+                roboticsCtx.beginPath();
+                roboticsCtx.arc(endX1, endY1, 10, 0, Math.PI * 2);
+                roboticsCtx.fill();
+                
+                // Second segment
+                const segment2Length = 35;
+                const endX2 = endX1 + Math.cos(angle * 1.5) * segment2Length;
+                const endY2 = endY1 + Math.sin(angle * 1.5) * segment2Length;
+                
+                roboticsCtx.beginPath();
+                roboticsCtx.moveTo(endX1, endY1);
+                roboticsCtx.lineTo(endX2, endY2);
+                roboticsCtx.stroke();
+                
+                // End effector
+                roboticsCtx.fillStyle = '#ff5252';
+                roboticsCtx.beginPath();
+                roboticsCtx.arc(endX2, endY2, 8, 0, Math.PI * 2);
+                roboticsCtx.fill();
+                
+                angle += 0.02;
+            }
+            
+            // Animation loop for robotics
+            function animateRobotics() {
+                drawRobotArm();
+                requestAnimationFrame(animateRobotics);
+            }
+            
+            animateRobotics();
+            
+            // Image Processing Visualization - Pixel Grid
+            const imageCanvas = document.getElementById('image-processing-visualization');
+            const imageCtx = imageCanvas.getContext('2d');
+            
+            imageCanvas.width = imageCanvas.offsetWidth;
+            imageCanvas.height = imageCanvas.offsetHeight;
+            
+            function drawPixelGrid() {
+                imageCtx.clearRect(0, 0, imageCanvas.width, imageCanvas.height);
+                
+                const gridSize = 10;
+                const cols = Math.floor(imageCanvas.width / gridSize);
+                const rows = Math.floor(imageCanvas.height / gridSize);
+                
+                for (let i = 0; i < cols; i++) {
+                    for (let j = 0; j < rows; j++) {
+                        const x = i * gridSize;
+                        const y = j * gridSize;
+                        
+                        // Create a gradient effect
+                        const intensity = Math.sin(i * 0.2 + j * 0.2 + Date.now() * 0.005) * 0.5 + 0.5;
+                        const colorValue = Math.floor(intensity * 255);
+                        
+                        imageCtx.fillStyle = `rgb(${colorValue}, ${255 - colorValue}, ${colorValue})`;
+                        imageCtx.fillRect(x, y, gridSize - 1, gridSize - 1);
+                    }
+                }
+            }
+            
+            // Animation loop for image processing
+            function animateImageProcessing() {
+                drawPixelGrid();
+                requestAnimationFrame(animateImageProcessing);
+            }
+            
+            animateImageProcessing();
+            
+            // Achievements Visualization - Bar Chart
+            const achievementsCanvas = document.getElementById('achievements-visualization');
+            const achievementsCtx = achievementsCanvas.getContext('2d');
+            
+            achievementsCanvas.width = achievementsCanvas.offsetWidth;
+            achievementsCanvas.height = achievementsCanvas.offsetHeight;
+            
+            const achievementsData = [0.8, 0.9, 0.7, 0.95, 0.85];
+            let animationProgress = 0;
+            
+            function drawAchievementsChart() {
+                achievementsCtx.clearRect(0, 0, achievementsCanvas.width, achievementsCanvas.height);
+                
+                const barWidth = achievementsCanvas.width / (achievementsData.length + 1);
+                const maxBarHeight = achievementsCanvas.height - 40;
+                
+                for (let i = 0; i < achievementsData.length; i++) {
+                    const barHeight = achievementsData[i] * maxBarHeight * animationProgress;
+                    const x = (i + 1) * barWidth - barWidth / 2;
+                    const y = achievementsCanvas.height - barHeight - 20;
+                    
+                    // Bar gradient
+                    const gradient = achievementsCtx.createLinearGradient(x, y, x, achievementsCanvas.height - 20);
+                    gradient.addColorStop(0, '#64ffda');
+                    gradient.addColorStop(1, '#52d1ff');
+                    
+                    achievementsCtx.fillStyle = gradient;
+                    achievementsCtx.fillRect(x - barWidth / 3, y, barWidth / 1.5, barHeight);
+                    
+                    // Bar top
+                    achievementsCtx.fillStyle = '#e6f1ff';
+                    achievementsCtx.beginPath();
+                    achievementsCtx.arc(x, y, barWidth / 6, 0, Math.PI * 2);
+                    achievementsCtx.fill();
+                }
+                
+                // Animate the bars growing
+                if (animationProgress < 1) {
+                    animationProgress += 0.02;
+                }
+            }
+            
+            // Animation loop for achievements
+            function animateAchievements() {
+                drawAchievementsChart();
+                requestAnimationFrame(animateAchievements);
+            }
+            
+            animateAchievements();
+            
+            // Handle window resize
+            window.addEventListener('resize', function() {
+                // Reset canvas dimensions
+                aiCanvas.width = aiCanvas.offsetWidth;
+                aiCanvas.height = aiCanvas.offsetHeight;
+                roboticsCanvas.width = roboticsCanvas.offsetWidth;
+                roboticsCanvas.height = roboticsCanvas.offsetHeight;
+                imageCanvas.width = imageCanvas.offsetWidth;
+                imageCanvas.height = imageCanvas.offsetHeight;
+                achievementsCanvas.width = achievementsCanvas.offsetWidth;
+                achievementsCanvas.height = achievementsCanvas.offsetHeight;
+                
+                // Redraw visualizations
+                drawNeuralNetwork();
+                animationProgress = 0; // Reset animation for achievements chart
+            });
+        }
     </script>
 </body>
 </html>
